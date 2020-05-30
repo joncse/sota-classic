@@ -283,10 +283,11 @@ function SOTA_HandlePlayerBid(sender, message)
 		end
 	end;
 
-	if not(userWentAllIn) and (dkp < minimumBid) then
-		SOTA_whisper(sender, string.format("You must bid at least %s DKP - bid was ignored.", minimumBid));
-		return;
-	end
+	-- Oasis: Don't tell the player about other player's bids 
+	-- if not(userWentAllIn) and (dkp < minimumBid) then
+	-- 	SOTA_whisper(sender, string.format("You must bid at least %s DKP - bid was ignored.", minimumBid));
+	-- 	return;
+	-- end
 
 
 	if Seconds < SOTA_CONFIG_AuctionExtension then
