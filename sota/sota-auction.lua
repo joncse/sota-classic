@@ -294,19 +294,20 @@ function SOTA_HandlePlayerBid(sender, message)
 		Seconds = SOTA_CONFIG_AuctionExtension;
 	end
 	
-	if userWentAllIn then
-		if bidtype == 2 then
-			SOTA_EchoEvent(SOTA_MSG_OnOffspecMaxBid, AuctionedItemLink, dkp, sender, bidderRank);
-		else
-			SOTA_EchoEvent(SOTA_MSG_OnMainspecMaxBid, AuctionedItemLink, dkp, sender, bidderRank);
-		end;
-	else
-		if bidtype == 2 then
-			SOTA_EchoEvent(SOTA_MSG_OnOffspecBid, AuctionedItemLink, dkp, sender, bidderRank);
-		else
-			SOTA_EchoEvent(SOTA_MSG_OnMainspecBid, AuctionedItemLink, dkp, sender, bidderRank);
-		end;
-	end;
+	-- Oasis: Don't tell the raid about bids
+	-- if userWentAllIn then
+	-- 	if bidtype == 2 then
+	-- 		SOTA_EchoEvent(SOTA_MSG_OnOffspecMaxBid, AuctionedItemLink, dkp, sender, bidderRank);
+	-- 	else
+	-- 		SOTA_EchoEvent(SOTA_MSG_OnMainspecMaxBid, AuctionedItemLink, dkp, sender, bidderRank);
+	-- 	end;
+	-- else
+	-- 	if bidtype == 2 then
+	-- 		SOTA_EchoEvent(SOTA_MSG_OnOffspecBid, AuctionedItemLink, dkp, sender, bidderRank);
+	-- 	else
+	-- 		SOTA_EchoEvent(SOTA_MSG_OnMainspecBid, AuctionedItemLink, dkp, sender, bidderRank);
+	-- 	end;
+	-- end;
 	
 
 	SOTA_RegisterBid(sender, dkp, bidtype, bidderClass, bidderRank, bidderRIdx);
