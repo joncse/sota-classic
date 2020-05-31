@@ -268,20 +268,30 @@ function SOTA_HandlePlayerBid(sender, message)
 	local bidderRank  = playerInfo[4];		-- This rank is by NAME
 	local bidderRIdx  = playerInfo[7];		-- This rank is by NUMBER!
 	
+	
+	-- Oasis: we'll accept your bid even if it is not the highest because the final cost of the item
+	-- will be {second highest bid + 5} and the second highest bid could come in at any time
+
 	-- Check user at least did bid more than last bidder:
-	if(dkp > hiBid) then
-		-- He did, but he also bid less than the minimum DKP:
-		if (availableDkp < dkp) then
-			-- If he doesnt have enough DKP, then let him go all out:
-			if(availableDkp < minimumBid) and (availableDkp > hiBid) then
-				dkp = availableDkp;
-				userWentAllIn = true;
-			else
-				SOTA_whisper(sender, string.format("You only have %d DKP - bid was ignored.", availableDkp));
-				return;
-			end;
-		end
-	end;
+	-- if(dkp > hiBid) then
+	-- 	-- He did, but he also bid less than the minimum DKP:
+	-- 	if (availableDkp < dkp) then
+	-- 		-- If he doesnt have enough DKP, then let him go all out:
+	-- 		if(availableDkp < minimumBid) and (availableDkp > hiBid) then
+	-- 			dkp = availableDkp;
+	-- 			userWentAllIn = true;
+	-- 		else
+	-- 			SOTA_whisper(sender, string.format("You only have %d DKP - bid was ignored.", availableDkp));
+	-- 			return;
+	-- 		end;
+	-- 	end
+	-- end;
+
+	-- Oasis: instead of above logic, only reject the bid if the player doesn't have enough dkp
+	if (availableDkp < dkp) then
+		SOTA_whisper(sender, string.format("You only have %d DKP - bid was ignored.", availableDkp));
+		return;
+	end
 
 	-- Oasis: Don't tell the player about other player's bids 
 	-- if not(userWentAllIn) and (dkp < minimumBid) then
