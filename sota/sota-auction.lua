@@ -227,7 +227,7 @@ function SOTA_HandlePlayerBid(sender, message)
 
 	local minimumBid = SOTA_GetMinimumBid(bidtype);
 	if not minimumBid then
-		SOTA_whisper(sender, "You cannot OS bid if an MS bid is already made.");
+		SOTA_whisper(sender, "A main spec bid has already been placed - your bid was ignored.");
 		return;
 	end
 	
