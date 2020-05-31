@@ -431,7 +431,7 @@ function SOTA_VerifyEventMessages()
 	-- Channel value: 0: Off, 1: RW, 2: Raid, 3: Guild, 4: Yell, 5: Say
 	local defaultMessages = { 
 		{ SOTA_MSG_OnOpen			, 1, "Auction open for $i" },
-		{ SOTA_MSG_OnAnnounceBid	, 2, "/w $s bid <your bid>" },
+		{ SOTA_MSG_OnAnnounceBid	, 2, "MS bid: /w $s bid <your bid> | OS bid: /w $s OS <your bid>" },
 		{ SOTA_MSG_OnAnnounceMinBid	, 2, "Minimum bid: $m DKP" },
 		{ SOTA_MSG_On10SecondsLeft	, 2, "10 seconds left for $i" },
 		{ SOTA_MSG_On9SecondsLeft	, 2, "9 seconds left" },
