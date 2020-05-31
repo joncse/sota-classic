@@ -461,14 +461,16 @@ function SOTA_HandlePlayerPass(playername)
 		return;
 	end;
 
-	if (size > 1) then
-		local nextbid = IncomingBidsTable[2];
-		raidEcho(string.format("%s passed; highest bid is now by %s for %d DKP", playername, nextbid[1], nextbid[2]));
-	else
-		raidEcho(string.format("%s passed; there are currently no active bids.", playername));
-	end;
+	-- Oasis: when a bid is cancelled, don't broadcast bids to the raid, but do tell the player their bid was cancelled
+	-- if (size > 1) then
+	-- 	local nextbid = IncomingBidsTable[2];
+	-- 	raidEcho(string.format("%s passed; highest bid is now by %s for %d DKP", playername, nextbid[1], nextbid[2]));
+	-- else
+	-- 	raidEcho(string.format("%s passed; there are currently no active bids.", playername));
+	-- end;
+	SOTA_whisper(playername, string.format("Your bid of %d DKP has been cancelled.", lastbid[2]));
 
-	SOTA_UnregisterBid(lastbid[1], lastbid[2]);		
+	SOTA_UnregisterBid(lastbid[1], lastbid[2]);
 end;
 
 
