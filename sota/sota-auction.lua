@@ -415,15 +415,59 @@ end
 
 
 function SOTA_AcceptBid(playername, bid)
-	if playername and bid then
+	bid = bid * 1; -- bid parameter comes into this fuction as a string, this converts it back to a numeric value
+
+	--[[ 
+		Oasis: we want to charge the player based on the second highest bid (or the guild minimum)
+		
+		We need to do the following:
+		1. Find the winning bid in the IncomingBidsTable
+		2. Capture the bid type (it could be a main spec or off-spec bid)
+		3. Find the second highest bid with the same bidtype as the winning bid type
+
+		4. If the second highest bid was found, the price to be paid is that price plus 5.
+		5. If there was no second highest bid with the same bidtype, the price to be paid is the guild minimum (depends on bid type)
+
+		6. Announce the winner and winning price
+		7. Subtract DKP from the winnig player
+	
+	--]]
+
+	-- step 1: Find the winning bid in the IncomingBidsTable and 
+	local winningBidType;
+	for n=1, table.getn(IncomingBidsTable), 1 do
+		if name == playername and dkp == bid then
+			-- step 2: Capture the winning bid type
+			winningBidType = IncomingBidsTable[n][3];
+		end
+	end
+
+	-- step 3: Find the second highest bid with the same bidtype as the winning bid type
+	local secondHighestBid = SOTA_GetSecondHighestBid(winningBidType);
+
+	-- step 4: If the second highest bid was found, the price to be paid is that price plus 5.
+	local winningBid;
+	if secondHighestBid then
+		winningBid = secondHighestBid + 5;
+	else
+		-- step 5: If there was no second highest bid with the same bidtype, the price to be paid is the guild minimum (depends on bid type)
+		if winningBidType == 1 then 
+			winningBid = SOTA_CONFIG_MIN_MS_BID;
+		else
+			winningBid = SOTA_CONFIG_MIN_OS_BID;
+		end
+	end
+
+	if playername and winningBid then
 		playername = SOTA_UCFirst(playername);
-		bid = 1 * bid;
 	
 		AuctionUIFrame:Hide();
 		
-		SOTA_EchoEvent(SOTA_MSG_OnComplete, AuctionedItemLink, bid, playername);
+		-- step 6: Announce the winner and winning price
+		SOTA_EchoEvent(SOTA_MSG_OnComplete, AuctionedItemLink, winningBid, playername);
 		
-		SOTA_SubtractPlayerDKP(playername, bid);		
+		-- step 7: Subtract DKP from the winnig player
+		SOTA_SubtractPlayerDKP(playername, winningBid);		
 	end
 end
 
@@ -769,6 +813,33 @@ function SOTA_GetHighestBid(bidtype)
 		--	Note: This might be an MS bid - OS bidders will have to ignore this!
 		if table.getn(IncomingBidsTable) > 0 then
 			return IncomingBidsTable[1];
+		end
+	end
+
+	return nil;
+end
+
+function SOTA_GetSecondHighestBid(bidtype)
+	local highestBid, secondHighestBid;
+
+	if bidtype and bidtype == 1 then
+		-- Find second highest MS bid:
+		for n=1, table.getn(IncomingBidsTable), 1 do
+			if IncomingBidsTable[n][3] == 1 then
+				if not highestBid then
+					highestBid = IncomingBidsTable[n][2]
+				else
+					secondHighestBid = IncomingBidsTable[n][2]
+					return secondHighestBid;
+				end
+			end
+		end	
+	else
+		--	Find highest bid regardless of type.
+		--	Note: This might be an MS bid - OS bidders will have to ignore this!
+		if table.getn(IncomingBidsTable) > 1 then
+			secondHighestBid = IncomingBidsTable[2][2];
+			return secondHighestBid;
 		end
 	end
 

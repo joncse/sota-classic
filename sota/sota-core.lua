@@ -111,6 +111,8 @@ SOTA_MSG_OnDKPSharedRange	= "OnDKPSharedRange";
 SOTA_MSG_OnDKPSharedRangeQ	= "OnDKPSharedRangeQueue";
 SOTA_MSG_OnDKPReplaced		= "OnDKPReplaced";
 
+SOTA_CONFIG_MIN_MS_BID			= 30;
+SOTA_CONFIG_MIN_OS_BID			= 10;
 
 
 --	Settings (persisted)
